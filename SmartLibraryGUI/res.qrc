@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/">
+        <file>pic/green.png</file>
+        <file>pic/red.png</file>
+        <file>pic/loading.gif</file>
+        <file>pic/flush.gif</file>
+        <file>pic/yellow.png</file>
+        <file>pic/background.jpg</file>
+        <file>pic/right.png</file>
+        <file>pic/wrong.png</file>
+        <file>pic/background_blurred.jpg</file>
+        <file>pic/tick.png</file>
+        <file>pic/cross.png</file>
+        <file>pic/book.png</file>
+        <file>pic/ComboBox.png</file>
+    </qresource>
+</RCC>

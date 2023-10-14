@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>BookManage</class>
+ <widget class="QDialog" name="BookManage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1060</width>
+    <height>590</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1060</width>
+    <height>590</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1060</width>
+    <height>590</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>图书管理</string>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog{border-image: url(:/pic/background_blurred.jpg);}
+QPushButton {background-color: rgba(160,160, 160,0.2);padding: 5px 6px 5px 6px;font: 23px 'Microsoft YaHei';letter-spacing: 2px;border: transparent;border-radius: 6px;}
+QPushButton:pressed:hover {background-color: rgba(153, 153, 153,0.5);}
+QPushButton:hover {background-color: rgba(230, 230, 230,0.4);border: 1px solid rgba(180,180,180,0.8)}
+QPushButton:disabled {background-color: rgba(204, 204, 204,0.3);color: rgb(120, 120, 120);}
+QLabel{letter-spacing: 1px;}</string>
+  </property>
+  <widget class="QListWidget" name="listWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>9</y>
+     <width>860</width>
+     <height>571</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QListWidget{background-color: rgba(235, 235, 235, 0.2);outline:none;}
+QListWidget::item{height: 237px;}
+QListWidget::item:hover {background-color: rgba(195,195,195,0.5);}
+QListWidget::item:selected {background-color: rgba(175,175,175,0.5);border-left: 5px solid rgb(44, 181, 255);}
+
+QScrollBar:vertical
+{
+       border: none;
+       background: transparent;
+       width: 6px;
+}
+ 
+QScrollBar::handle:vertical
+{
+      background-color: rgba(170,170,170,1);
+      min-height: 30px;
+	  border-radius:3px;
+	  width: 6px;
+}
+ 
+QScrollBar::add-line:vertical
+{
+       border: none;
+       height: 0px;
+}
+ 
+QScrollBar::sub-line:vertical
+{
+       border: none;
+       height: 0px;
+}
+ 
+QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical
+{	
+		background:transparent;
+      	border-radius:3px;
+}</string>
+   </property>
+   <property name="horizontalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="verticalScrollMode">
+    <enum>QAbstractItemView::ScrollPerItem</enum>
+   </property>
+   <property name="horizontalScrollMode">
+    <enum>QAbstractItemView::ScrollPerItem</enum>
+   </property>
+   <property name="sortingEnabled">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="add_Btn">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>880</x>
+     <y>250</y>
+     <width>171</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>添加书籍</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="del_Btn">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>880</x>
+     <y>390</y>
+     <width>171</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>删除书籍</string>
+   </property>
+   <property name="shortcut">
+    <string>Del</string>
+   </property>
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="edit_Btn">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>880</x>
+     <y>320</y>
+     <width>171</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>编辑图书信息</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="net_attitude">
+   <property name="geometry">
+    <rect>
+     <x>880</x>
+     <y>20</y>
+     <width>30</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">image: url(:/pic/red.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>910</x>
+     <y>20</y>
+     <width>141</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>18</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>网络数据库</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="localdata_attitude">
+   <property name="geometry">
+    <rect>
+     <x>880</x>
+     <y>60</y>
+     <width>30</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">image: url(:/pic/red.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>910</x>
+     <y>60</y>
+     <width>141</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>18</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>本地数据库</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="quit_Btn">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>880</x>
+     <y>530</y>
+     <width>171</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>确定</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="find_btn">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>880</x>
+     <y>460</y>
+     <width>171</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>查找书籍</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="export_Btn">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>880</x>
+     <y>180</y>
+     <width>171</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>导出数据库</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="import_Btn">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>880</x>
+     <y>110</y>
+     <width>171</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>导入数据库</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="backLabel">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1061</width>
+     <height>591</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgba(245, 245, 245,0.8);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <zorder>backLabel</zorder>
+  <zorder>listWidget</zorder>
+  <zorder>add_Btn</zorder>
+  <zorder>del_Btn</zorder>
+  <zorder>edit_Btn</zorder>
+  <zorder>net_attitude</zorder>
+  <zorder>label</zorder>
+  <zorder>localdata_attitude</zorder>
+  <zorder>label_2</zorder>
+  <zorder>quit_Btn</zorder>
+  <zorder>find_btn</zorder>
+  <zorder>export_Btn</zorder>
+  <zorder>import_Btn</zorder>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
