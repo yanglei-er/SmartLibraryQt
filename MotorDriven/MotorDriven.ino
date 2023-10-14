@@ -81,7 +81,7 @@ void loop()
   else
   {
     motorsStop();
-    delay(500);
+    delay(300);
     sleep_cpu(); 
   }
 }

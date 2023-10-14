@@ -21,6 +21,7 @@ public:
     QSqlRecord getOneBookInfo(const QString &type, const QString &str);
     QList<QSqlRecord> getBooksInfo(const QString &type, const QString &str);
     QSqlRecord getOneBookInfoByIndex(const int &index);
+    QList<QSqlRecord> getBooksInfoByName(const QString &name);
     QList<QString> getAllisbn();
     void editBook(const QString &isbn, const QString &name, const QString &author, const QString &press, const QString &pressDate, const QString &pressPlace, const qreal &price, const QString &clcName, const QString &bookDesc, const QString &pages, const QString &words, const int &shelfNumber, const int isBorrowed = 0);
     void delOneBook(const QString &isbn);

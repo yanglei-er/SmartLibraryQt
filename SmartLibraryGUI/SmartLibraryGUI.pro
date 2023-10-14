@@ -9,7 +9,7 @@ QMAKE_TARGET_PRODUCT = "SmartLibrary"
 QMAKE_TARGET_DESCRIPTION = "Smart library"
 QMAKE_TARGET_COMPANY = "Yanglei"
 QMAKE_TARGET_COPYRIGHT = "Copyright (c) 2023 Yanglei.All rights reserved."
-RC_ICONS = smartlibrary.ico
+RC_ICONS = smartlibraryGUI.ico
 RC_LANG = 0x0004
 
 SOURCES += \
@@ -23,6 +23,7 @@ SOURCES += \
     database.cpp \
     editbook.cpp \
     findbook.cpp \
+    findbookcell.cpp \
     globalprocess.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -42,6 +43,7 @@ HEADERS += \
     database.h \
     editbook.h \
     findbook.h \
+    findbookcell.h \
     globalprocess.h \
     mainwindow.h \
     network.h \
@@ -58,6 +60,7 @@ FORMS += \
     btdevcell.ui \
     editbook.ui \
     findbook.ui \
+    findbookcell.ui \
     mainwindow.ui \
     returnbook.ui \
     viewbook.ui

@@ -176,6 +176,7 @@ void BookManage::on_del_Btn_clicked()
         ui->listWidget->currentItem()->setSelected(false);
         ui->edit_Btn->setEnabled(false);
         ui->del_Btn->setEnabled(false);
+        setWindowTitle(QString("图书管理 - 共 %1 本书").arg(indexMax+1));
     }
 }
 

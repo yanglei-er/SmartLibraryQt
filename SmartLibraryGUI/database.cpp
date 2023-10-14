@@ -150,6 +150,21 @@ QSqlRecord Database::getOneBookInfoByIndex(const int &index)
     return record;
 }
 
+QList<QSqlRecord> Database::getBooksInfoByName(const QString &name)
+{
+    QSqlQuery sql(database);
+    QList<QSqlRecord> records;
+    if(!sql.exec(QString("SELECT * FROM main WHERE bookName like '%name%'").replace("name", name)))
+    {
+        return records;
+    }
+    while(sql.next())
+    {
+        records << sql.record();
+    }
+    return records;
+}
+
 void Database::delOneBook(const QString &isbn)
 {
     QSqlQuery sql(database);

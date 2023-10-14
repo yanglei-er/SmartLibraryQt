@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>图书查询</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QDialog#viewBook{border-image: url(:/pic/background_blurred.jpg);}
