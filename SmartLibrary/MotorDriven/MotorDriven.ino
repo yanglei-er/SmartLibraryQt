@@ -1,6 +1,9 @@
 #include <avr/sleep.h>
 bool stop = false;
 
+//中断口
+#define INTERRUPT_PIN 2
+
 //电机设置
 #define right_IN1 36
 #define right_IN2 34
@@ -16,15 +19,15 @@ bool stop = false;
 #define left_ENB 13
 
 // 循迹设置
-#define leftA_track_PIN 40
-#define leftB_track_PIN 42
-#define middle_track_PIN 44
-#define rightA_track_PIN 46
-#define rightB_track_PIN 48
+#define leftA_track_PIN 13
+#define leftB_track_PIN 12
+#define middle_track_PIN 11
+#define rightA_track_PIN 10
+#define rightB_track_PIN 9
 float Kp = 10, Ki = 0.5, Kd = 0;                    //pid弯道参数参数 
 float error = 0, P = 0, I = 0, D = 0, PID_value = 0;//pid直道参数 
 float previous_error = 0, previous_I = 0;           //误差值 
-static int initial_motor_speed = 120;               //初始速度
+static int initial_motor_speed = 80;               //初始速度
 int sensor[5] = {0, 0, 0, 0, 0};                    //传感器状态
 
 void read_sensor_values();  //读取初值 
@@ -34,9 +37,11 @@ void motor_control(); //电机控制
 void setup()
 {
   Serial.begin(9600);
-  set_sleep_mode (SLEEP_MODE_PWR_DOWN);
+  //设置睡眠参数
+  set_sleep_mode(SLEEP_MODE_PWR_DOWN);
   sleep_enable();
-
+  // 设置中断
+  attachInterrupt(0, changeState, CHANGE);
   // 循迹引脚初始化
   pinMode (leftA_track_PIN, INPUT); //设置引脚为输入引脚
   pinMode (leftB_track_PIN, INPUT); //设置引脚为输入引脚
@@ -76,14 +81,22 @@ void loop()
     read_sensor_values(); //读取传感器值
     calc_pid(); //计算PID
     motor_control();  //驱动电机
-    delay(300);
+    delay(50);
   }
   else
   {
     motorsStop();
-    delay(300);
-    sleep_cpu(); 
+    error = 0, P = 0, I = 0, D = 0, PID_value = 0; 
+    previous_error = 0, previous_I = 0;
+    delay(100);
+    sleep_cpu();
   }
+}
+
+void changeState()
+{
+  stop = !stop;
+  sleep_disable();
 }
 
 void read_sensor_values()
@@ -93,34 +106,39 @@ void read_sensor_values()
   sensor[2] = digitalRead(middle_track_PIN);
   sensor[3] = digitalRead(rightA_track_PIN);
   sensor[4] = digitalRead(rightB_track_PIN);
-  if ((sensor[0] == 0) && (sensor[1] == 0) && (sensor[2] == 0) && (sensor[3] == 0) && (sensor[4] == 1))
+  if ((sensor[0] == 1) && (sensor[1] == 1) && (sensor[2] == 1) && (sensor[3] == 1) && (sensor[4] == 0))
   {
-    error = 2;//          0 0 0 0 1 大右转
+    error = 6;//          1 1 1 1 0 大右转
   }
-  else if ((sensor[0] == 0) && (sensor[1] == 0) && (sensor[2] == 0) && (sensor[3] == 1) && (sensor[4] == 0))
+  else if ((sensor[0] == 1) && (sensor[1] == 1) && (sensor[2] == 1) && (sensor[3] == 0) && (sensor[4] == 1))
   {
-    error = 1;//          0 0 0 1 0 小右转
+    error = 3;//          1 1 1 0 1 小右转
   }
-  else if ((sensor[0] == 0) && (sensor[1] == 0) && (sensor[2] == 1) && (sensor[3] == 0) && (sensor[4] == 0))
+  else if ((sensor[0] == 1) && (sensor[1] == 1) && (sensor[2] == 0) && (sensor[3] == 1) && (sensor[4] == 1))
   {
-    error = 0;//          0 0 1 0 0 直走
+    error = 0;//          1 1 0 1 1 直走
   }
-  else if ((sensor[0] == 0) && (sensor[1] == 1) && (sensor[2] == 0) && (sensor[3] == 0) && (sensor[4] == 0))
+  else if ((sensor[0] == 1) && (sensor[1] == 0) && (sensor[2] == 1) && (sensor[3] == 1) && (sensor[4] == 1))
   {
-    error = -1;//         0 1 0 0 0 小左转
+    error = -3;//         1 0 1 1 1 小左转
   }
-  else if ((sensor[0] == 1) && (sensor[1] == 0) && (sensor[2] == 0) && (sensor[3] == 0) && (sensor[4] == 0))
+  else if ((sensor[0] == 0) && (sensor[1] == 1) && (sensor[2] == 1) && (sensor[3] == 1) && (sensor[4] == 1))
   {
-    error = -2;//         1 0 0 0 0 大左转
+    error = -6;//         0 1 1 1 1 大左转
   }
-  else if((sensor[0] == 1) && (sensor[1] == 1) && (sensor[2] == 1) && (sensor[3] == 1) && (sensor[4] == 1))
-  {//                     1 1 1 1 1 停车
+  else if((sensor[0] == 1) && (sensor[1] == 0) && (sensor[2] == 0) && (sensor[3] == 0) && (sensor[4] == 1))
+  {//                     1 0 0 0 1 停车
+    error = 0;
+    stop = true;
+  }
+  else if((sensor[0] == 0) && (sensor[1] == 0) && (sensor[2] == 0) && (sensor[3] == 0) && (sensor[4] == 0))
+  {//                     0 0 0 0 0 停车
     error = 0;
     stop = true;
   }
   else
   {
-    error = 0;
+    error = error;
   }
 }
 
@@ -194,8 +212,10 @@ void motorsWrite(int speedL, int speedR)
 {
   analogWrite(left_ENA, abs(speedR));
   analogWrite(left_ENB, abs(speedR));
+  // analogWrite(left_ENB, abs(speedR-error));
   analogWrite(right_ENA, abs(speedL));
   analogWrite(right_ENB, abs(speedL));
+  // analogWrite(right_ENB, abs(speedL-error));
 }
 
 void motorsStop() 
