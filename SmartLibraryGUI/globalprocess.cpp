@@ -53,5 +53,6 @@ GlobalProcess::GlobalProcess(QObject *parent)
 void GlobalProcess::socketReadyRead()
 {
     QString str;
+    qDebug()<< socket->readAll();
     QTimer::singleShot(200, this, [&](){str=QString::fromUtf8(socket->readAll());if(!str.isEmpty()){emit bleRead(str);}});
 }

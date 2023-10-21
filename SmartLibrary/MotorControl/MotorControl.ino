@@ -1,7 +1,6 @@
 //控制中断
-#define INTERRUPT_PIN 3
-bool state = HIGH;
-bool previous_state = LOW;
+#define INTERRUPT_PIN 4
+String previous_state = "启动";
 
 // 遥控器配置
 #include <IRremote.hpp>
@@ -25,36 +24,24 @@ void setup()
   //启动遥控器
   IrReceiver.begin(RECV_PIN); 
   //RFID启动
-  SPI.begin();                                                  // Init SPI bus
+  SPI.begin();
   mfrc522.PCD_Init(); 
   //中断设置
   pinMode(INTERRUPT_PIN, OUTPUT);
-  digitalWrite(INTERRUPT_PIN, LOW);
+  digitalWrite(INTERRUPT_PIN, HIGH);
 }
 
 void loop()
 {
   if(IrReceiver.decode())
   {
-    if(IrReceiver.decodedIRData.command == 0x7)
+    if(IrReceiver.decodedIRData.command == 7)
     {
-      if(previous_state == LOW)
-      {
-        Serial.println("停车");
-        digitalWrite(INTERRUPT_PIN, state);
-        previous_state = HIGH;
-        state = !state;
-      }
+      motorStop();
     }
-    else if(IrReceiver.decodedIRData.command == 0x15)
+    else if(IrReceiver.decodedIRData.command == 21)
     {
-      if(previous_state == HIGH)
-      {
-        Serial.println("启动");
-        digitalWrite(INTERRUPT_PIN, state);
-        previous_state = LOW;
-        state = !state;
-      }
+      motorStart();
     }
     IrReceiver.resume();
   }
@@ -73,7 +60,7 @@ void loop()
       byte size = sizeof(buffer);
       MFRC522::StatusCode status;
       status = (MFRC522::StatusCode)mfrc522.MIFARE_Read(pageAddr, buffer, &size);
-      if(state == MFRC522::STATUS_OK)
+      if(status == MFRC522::STATUS_OK)
       {
         Serial.write(buffer[0]);
         Serial.println();
@@ -83,4 +70,28 @@ void loop()
     }
   }
   delay(50);
+}
+
+void motorStart()
+{
+  if(previous_state == "停止")
+  {
+    Serial.println("启动");
+    previous_state = "启动";
+    digitalWrite(INTERRUPT_PIN, LOW);
+    delay(20);
+    digitalWrite(INTERRUPT_PIN, HIGH);
+  }
+}
+
+void motorStop()
+{
+  if(previous_state == "启动")
+  {
+    Serial.println("停止");
+    previous_state = "停止";
+    digitalWrite(INTERRUPT_PIN, LOW);
+    delay(20);
+    digitalWrite(INTERRUPT_PIN, HIGH);
+  }
 }
