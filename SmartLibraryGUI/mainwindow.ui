@@ -419,6 +419,62 @@ QPushButton{letter-spacing: 2px;}</string>
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
+   <widget class="QPushButton" name="stop_Btn">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>80</y>
+      <width>211</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>-1</pointsize>
+      <italic>false</italic>
+      <bold>false</bold>
+      <kerning>true</kerning>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="text">
+     <string>停车</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="start_Btn">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>170</y>
+      <width>211</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>-1</pointsize>
+      <italic>false</italic>
+      <bold>false</bold>
+      <kerning>true</kerning>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="text">
+     <string>启动</string>
+    </property>
+   </widget>
    <zorder>backLabel</zorder>
    <zorder>bluetooth_Btn</zorder>
    <zorder>quit_Btn</zorder>
@@ -436,6 +492,8 @@ QPushButton{letter-spacing: 2px;}</string>
    <zorder>viewBook_Btn</zorder>
    <zorder>reboot_Btn</zorder>
    <zorder>label_6</zorder>
+   <zorder>stop_Btn</zorder>
+   <zorder>start_Btn</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

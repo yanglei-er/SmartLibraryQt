@@ -42,6 +42,7 @@ void GlobalProcess::setBleDisconnect()
 
 void GlobalProcess::SocketWrite(const QString &str)
 {
+    qDebug() << str;
     socket->write(str.toUtf8());
 }
 

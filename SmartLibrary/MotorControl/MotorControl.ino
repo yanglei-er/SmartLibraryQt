@@ -79,7 +79,7 @@ void motorStart()
     Serial.println("启动");
     previous_state = "启动";
     digitalWrite(INTERRUPT_PIN, LOW);
-    delay(20);
+    delayMicroseconds(500);
     digitalWrite(INTERRUPT_PIN, HIGH);
   }
 }
@@ -91,7 +91,7 @@ void motorStop()
     Serial.println("停止");
     previous_state = "停止";
     digitalWrite(INTERRUPT_PIN, LOW);
-    delay(20);
+    delayMicroseconds(500);
     digitalWrite(INTERRUPT_PIN, HIGH);
   }
 }

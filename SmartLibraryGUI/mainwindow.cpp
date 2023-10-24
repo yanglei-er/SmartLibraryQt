@@ -62,6 +62,8 @@ void MainWindow::bleConnect()
     ui->borrowBook_Btn->setEnabled(true);
     ui->returnBook_Btn->setEnabled(true);
     ui->viewBook_Btn->setEnabled(true);
+    ui->stop_Btn->setEnabled(true);
+    ui->start_Btn->setEnabled(true);
 }
 
 void MainWindow::bleDisconnect()
@@ -70,6 +72,8 @@ void MainWindow::bleDisconnect()
     ui->borrowBook_Btn->setEnabled(false);
     ui->returnBook_Btn->setEnabled(false);
     ui->viewBook_Btn->setEnabled(false);
+    ui->stop_Btn->setEnabled(false);
+    ui->start_Btn->setEnabled(false);
 }
 
 void MainWindow::closeEvent(QCloseEvent * event)
@@ -110,3 +114,14 @@ void MainWindow::on_viewBook_Btn_clicked()
     w.exec();
 }
 
+void MainWindow::on_stop_Btn_clicked()
+{
+    GlobalProcess *globalObj = GlobalProcess::getInstance();
+    globalObj->SocketWrite("stop");
+}
+
+void MainWindow::on_start_Btn_clicked()
+{
+    GlobalProcess *globalObj = GlobalProcess::getInstance();
+    globalObj->SocketWrite("start");
+}
