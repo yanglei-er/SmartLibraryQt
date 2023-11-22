@@ -1,3 +1,5 @@
+#include <IRremote.hpp>
+
 //舵机设置
 #include <Servo.h>
 Servo servo_left;
@@ -9,10 +11,12 @@ volatile bool turn = false;
 
 #include <SoftwareSerial.h>
 //蓝牙设置 密码默认1234
-SoftwareSerial ble(10, 11); // (TX, RX)
+SoftwareSerial ble(10, 11); // (RX, TX)
 //扫码设置
 #define scanControl 9
-SoftwareSerial barcode(8, 7);//(TX, RX)
+SoftwareSerial barcode(4,5);//(RX, TX)
+
+SoftwareSerial uno2(2,3);//(RX, TX)
 
 //舵机转动
 void servoTurn()
@@ -25,10 +29,11 @@ void setup()
   Serial.begin(9600);
   ble.begin(9600);
   barcode.begin(9600);
+  uno2.begin(9600);
 
   //扫码设置
   pinMode(scanControl, OUTPUT);
-  //digitalWrite(scanControl, LOW);
+  digitalWrite(scanControl, LOW);
 
   //中断设置
   pinMode(INTERRUPT_PIN, INPUT_PULLUP);
@@ -43,8 +48,10 @@ void setup()
 
 void loop() 
 {
+  
   if(ble.available())
   {
+    //uno2.println(bleRead());
     Serial.println(bleRead());
   }
   if(barcode.available())
@@ -52,6 +59,7 @@ void loop()
     String str = barcodeRead();
     bleWrite(str);
   }
+  bleWrite("123496");
   delay(500);
 }
 
@@ -68,7 +76,7 @@ String bleRead()
 
 void scanStart()
 {
-  digitalWrite(scanControl, );
+  digitalWrite(scanControl, HIGH);
 }
 
 String barcodeRead()
@@ -76,3 +84,18 @@ String barcodeRead()
   String data = barcode.readString();
   return data;
 }
+
+void servocontrol()
+{
+  Serial.println("转动");
+  for(int angle = 0; angle <=30; angle++)
+  {
+    servo_left.write(86-angle);
+    servo_right.write(94+angle);
+    delay(80);
+  }
+  delay(5000);
+  
+  }
+  
+

@@ -830,6 +830,25 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <string/>
    </property>
   </widget>
+  <widget class="QPushButton" name="find_Btn">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>780</x>
+     <y>420</y>
+     <width>171</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::StrongFocus</enum>
+   </property>
+   <property name="text">
+    <string>带我去</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

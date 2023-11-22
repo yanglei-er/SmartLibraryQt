@@ -35,6 +35,12 @@ void viewBook::on_isbn_Edit_textChanged(const QString &str)
         ui->isbn_Edit->setCursorPosition(1);
         ui->attitude_label->setPixmap(wrong);
     }
+    else if(str.length() ==  13)
+    {
+        ui->isbn_Edit->setInputMask("999-9-9999-9999-9");
+        ui->search_Btn->setEnabled(true);
+        ui->attitude_label->setPixmap(TOOLS::loadImage(":/pic/right.png", QSize(40,40)));
+    }
     else if(str.length() != 17)
     {
         ui->search_Btn->setEnabled(false);

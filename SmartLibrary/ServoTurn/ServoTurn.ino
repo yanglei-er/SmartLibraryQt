@@ -29,19 +29,21 @@ void setup()
 
 void loop()
 {
-  // Serial.println("转动");
-  // for(int angle = 0; angle <=30; angle++)
-  // {
-  //   servo_left.write(angle);
-  //   servo_right.write(angle);
-  //   delay(20);
-  // }
-  // delay(2000);
-  // for (int angle = 0; angle <=30; angle++)
-  // {
-  //   servo_left.write(90-angle);
-  //   servo_right.write(90+angle);
-  //   delay(20);
-  // }
-  delay(200);
+  Serial.println("转动");
+  for(int angle = 0; angle <=30; angle++)
+  {
+    servo_left.write(86-angle);
+    servo_right.write(94+angle);
+    delay(80);
+  }
+  delay(5000);
+  for (int angle = 0; angle <=30; angle++)
+  {
+    servo_left.write(56+angle);
+    servo_right.write(124-angle);
+    delay(10);
+  }
+  delay(5000);
+
 }
+

@@ -1,5 +1,5 @@
 #include <SoftwareSerial.h>
-SoftwareSerial softSerial(4, 5); // (TX, RX)
+SoftwareSerial softSerial(10, 11); // (RX, TX)
 
 void setup() 
 {
@@ -20,6 +20,7 @@ void loop()
   if(Serial.available())
   {
     String SerialData = Serial.readString();
+    Serial.println(SerialData);
     softSerial.print(SerialData);
   }
   delay(500);

@@ -1,3 +1,7 @@
+#include <SoftwareSerial.h>
+//蓝牙设置 密码默认1234
+SoftwareSerial uno1(2, 3); // (RX, TX)
+
 //控制中断
 #define INTERRUPT_PIN 4
 String previous_state = "启动";
@@ -17,10 +21,12 @@ String previous_state = "启动";
 MFRC522 mfrc522(SDA_PIN, RST_PIN);
 byte nuidPICC[4]; // 存储读取的UID
 byte pageAddr = 0x06;
-
+char y;
+char B;
 void setup()
 {
   Serial.begin(9600);
+  uno1.begin(9600);
   //启动遥控器
   IrReceiver.begin(RECV_PIN); 
   //RFID启动
@@ -64,6 +70,16 @@ void loop()
       {
         Serial.write(buffer[0]);
         Serial.println();
+        Serial.print("RFID=");
+        Serial.print(buffer[0]-48);
+        if(char(buffer[0])==y)
+        {
+          motorStart();
+        }
+        else {
+          motorStop();
+        }
+        Serial.println();
         mfrc522.PICC_HaltA();
         mfrc522.PCD_StopCrypto1();
       }
@@ -75,7 +91,7 @@ void loop()
 void motorStart()
 {
   if(previous_state == "停止")
-  {
+  { uno1.println('A');
     Serial.println("启动");
     previous_state = "启动";
     digitalWrite(INTERRUPT_PIN, LOW);

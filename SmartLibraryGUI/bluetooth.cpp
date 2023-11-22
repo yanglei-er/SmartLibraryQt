@@ -142,6 +142,7 @@ void Bluetooth::socketConnected()
     ui->connect_Btn->setText("断开连接");
     ui->connect_Btn->setEnabled(true);
     ui->listWidget->setEnabled(true);
+    connect(globalObj->getSocket(), &QBluetoothSocket::readyRead, globalObj->getInstance(), &GlobalProcess::socketReadyRead);
     emit bleConnected();
 }
 // 断开连接

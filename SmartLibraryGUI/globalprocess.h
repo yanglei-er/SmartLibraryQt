@@ -22,7 +22,7 @@ private:
     ~GlobalProcess(){};
     GlobalProcess(const GlobalProcess &){};
     const GlobalProcess &operator=(const GlobalProcess&);
-private slots:
+public slots:
     void socketReadyRead();
 private:
     static GlobalProcess *obj;
