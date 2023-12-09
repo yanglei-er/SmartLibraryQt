@@ -17,12 +17,13 @@ public:
 private slots:
     void on_isbn_Edit_returnPressed();
     void on_isbn_Edit_textChanged(const QString &str);
+    void on_scan_Btn_clicked();
     void on_search_Btn_clicked();
     void on_quit_Btn_clicked();
     void on_addBtn_clicked();
     void on_shelfNum_Edit_textEdited(const QString &str);
     void on_shelfNum_Edit_returnPressed();
-    void bleRead(QString str);
+    void bleRead(QString isbn);
 private:
     Ui::addBook *ui;
     Database sql;

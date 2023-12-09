@@ -13,14 +13,13 @@ public:
     QBluetoothSocket *getSocket();
     void setBleStatus(bool status);
     bool isBleConnect();
-    void setBleDisconnect();
     void SocketWrite(const QString &str);
 signals:
     void bleRead(const QString);
 private:
     GlobalProcess(QObject *parent = nullptr);
-    ~GlobalProcess(){};
-    GlobalProcess(const GlobalProcess &){};
+    ~GlobalProcess(){}
+    GlobalProcess(const GlobalProcess &){}
     const GlobalProcess &operator=(const GlobalProcess&);
 public slots:
     void socketReadyRead();

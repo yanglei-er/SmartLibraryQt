@@ -35,14 +35,8 @@ bool GlobalProcess::isBleConnect()
     return isBleConnected;
 }
 
-void GlobalProcess::setBleDisconnect()
-{
-    socket->disconnectFromService();
-}
-
 void GlobalProcess::SocketWrite(const QString &str)
 {
-    qDebug() << str;
     socket->write(str.toUtf8());
 }
 
@@ -53,8 +47,7 @@ GlobalProcess::GlobalProcess(QObject *parent)
 
 void GlobalProcess::socketReadyRead()
 {
-    qDebug()<<126515665651651;
-    QString str;
-    qDebug()<< socket->readAll();
-    QTimer::singleShot(200, this, [&](){str=QString::fromUtf8(socket->readAll());if(!str.isEmpty()){emit bleRead(str);}});
+    QTimer::singleShot(100, this, [&](){
+        QString str=QString::fromUtf8(socket->readAll());
+        if(!str.isEmpty()){qDebug()<<str;emit bleRead(str);}});
 }

@@ -220,7 +220,7 @@ QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical
    <property name="geometry">
     <rect>
      <x>778</x>
-     <y>398</y>
+     <y>350</y>
      <width>171</width>
      <height>61</height>
     </rect>
@@ -751,9 +751,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
    </property>
    <property name="geometry">
     <rect>
-     <x>780</x>
+     <x>870</x>
      <y>10</y>
-     <width>171</width>
+     <width>81</width>
      <height>51</height>
     </rect>
    </property>
@@ -799,7 +799,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
    <property name="geometry">
     <rect>
      <x>794</x>
-     <y>310</y>
+     <y>290</y>
      <width>140</width>
      <height>60</height>
     </rect>
@@ -847,6 +847,22 @@ li.checked::marker { content: &quot;\2612&quot;; }
    </property>
    <property name="text">
     <string>带我去</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="scan_Btn">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>780</x>
+     <y>10</y>
+     <width>81</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>扫描</string>
    </property>
   </widget>
  </widget>

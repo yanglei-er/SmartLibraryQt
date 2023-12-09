@@ -21,8 +21,7 @@ String previous_state = "启动";
 MFRC522 mfrc522(SDA_PIN, RST_PIN);
 byte nuidPICC[4]; // 存储读取的UID
 byte pageAddr = 0x06;
-char y;
-char B;
+
 void setup()
 {
   Serial.begin(9600);
@@ -71,15 +70,7 @@ void loop()
         Serial.write(buffer[0]);
         Serial.println();
         Serial.print("RFID=");
-        Serial.print(buffer[0]-48);
-        if(char(buffer[0])==y)
-        {
-          motorStart();
-        }
-        else {
-          motorStop();
-        }
-        Serial.println();
+        Serial.print(buffer[0]);
         mfrc522.PICC_HaltA();
         mfrc522.PCD_StopCrypto1();
       }

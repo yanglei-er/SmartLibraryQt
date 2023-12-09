@@ -80,18 +80,17 @@ void findBook::on_listWidget_itemClicked(QListWidgetItem *item)
 
 void findBook::on_find_Btn_clicked()
 {
+    QString isbn = bookisbns.at(ui->listWidget->currentRow());
+    QSqlRecord record = sql.getOneBookInfo("isbn", isbn);
     if(globalObj->isBleConnect())
     {
-        QString isbn = bookisbns.at(ui->listWidget->currentRow());
-        QSqlRecord record = sql.getOneBookInfo("isbn", isbn);
-        globalObj->SocketWrite(record.value("shelfNumber").toString());
-        ui->Tip->setText("小车正在启动，请稍后");
+        globalObj->SocketWrite(QString("带我去,%1").arg(record.value("shelfNumber").toString()));
+        ui->Tip->setText(QString("小车正在启动，请前往%1号书架").arg(record.value("shelfNumber").toString()));
     }
     else
     {
-        ui->Tip->setText("蓝牙未连接，小车无法启动");
+        ui->Tip->setText(QString("请前往%1号书架").arg(record.value("shelfNumber").toString()));
     }
-    ui->find_Btn->setEnabled(false);
 }
 
 void findBook::on_quit_Btn_clicked()

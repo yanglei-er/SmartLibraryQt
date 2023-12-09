@@ -14,11 +14,14 @@ public:
     explicit viewBook(QWidget *parent = nullptr);
     ~viewBook();
 private slots:
-    void bleRead(QString str);
+    void bleRead(QString isbn);
     void on_isbn_Edit_textChanged(const QString &str);
+    void on_scan_Btn_clicked();
     void on_search_Btn_clicked();
     void on_quit_Btn_clicked();
     void on_isbn_Edit_returnPressed();
+    void on_find_Btn_clicked();
+
 private:
     Ui::viewBook *ui;
     GlobalProcess *globalObj = GlobalProcess::getInstance();

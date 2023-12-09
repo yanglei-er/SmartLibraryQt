@@ -8,6 +8,7 @@ viewBook::viewBook(QWidget *parent) : QDialog(parent), ui(new Ui::viewBook)
     if(globalObj->isBleConnect())
     {
         ui->isbn_Edit->setPlaceholderText("请扫描或输入13位ISBN码");
+        ui->scan_Btn->setEnabled(true);
         connect(globalObj, &GlobalProcess::bleRead, this, &viewBook::bleRead);
     }
 }
@@ -21,9 +22,26 @@ viewBook::~viewBook()
     }
 }
 
+void viewBook::bleRead(QString isbn)
+{
+    if(isbn.startsWith("978") && isbn.length() == 13)
+    {
+        if(isbn != ui->isbn_Edit->text().remove("-"))
+        {
+            ui->isbn_Edit->setText(isbn);
+            ui->isbn_Edit->setInputMask("999-9-9999-9999-9");
+            ui->isbn_Edit->setCursorPosition(17);
+            on_search_Btn_clicked();
+        }
+    }
+    else
+    {
+        ui->Tip->setText("条码错误，请重新扫描");
+    }
+}
+
 void viewBook::on_isbn_Edit_textChanged(const QString &str)
 {
-    qDebug()<<str;
     if(str == "----")
     {
         ui->isbn_Edit->setInputMask("");
@@ -35,12 +53,6 @@ void viewBook::on_isbn_Edit_textChanged(const QString &str)
         ui->isbn_Edit->setCursorPosition(1);
         ui->attitude_label->setPixmap(wrong);
     }
-    else if(str.length() ==  13)
-    {
-        ui->isbn_Edit->setInputMask("999-9-9999-9999-9");
-        ui->search_Btn->setEnabled(true);
-        ui->attitude_label->setPixmap(TOOLS::loadImage(":/pic/right.png", QSize(40,40)));
-    }
     else if(str.length() != 17)
     {
         ui->search_Btn->setEnabled(false);
@@ -48,12 +60,17 @@ void viewBook::on_isbn_Edit_textChanged(const QString &str)
     }
     else if(str.length() == 17)
     {
-        ui->isbn_Edit->setInputMask("999-9-9999-9999-9");
         ui->search_Btn->setEnabled(true);
         ui->attitude_label->setPixmap(TOOLS::loadImage(":/pic/right.png", QSize(40,40)));
     }
 }
 
+void viewBook::on_scan_Btn_clicked()
+{
+    ui->scan_Btn->setEnabled(false);
+    globalObj->SocketWrite("scan");
+    QTimer::singleShot(5000, this, [&](){ui->scan_Btn->setEnabled(true);});
+}
 
 void viewBook::on_search_Btn_clicked()
 {
@@ -103,22 +120,18 @@ void viewBook::on_isbn_Edit_returnPressed()
     }
 }
 
-void viewBook::bleRead(QString str)
+void viewBook::on_find_Btn_clicked()
 {
-    if(str.startsWith("978") && str.length() > 13)
+    QString isbn = ui->isbn_Edit->text().remove("-");
+    QSqlRecord record = sql.getOneBookInfo("isbn", isbn);
+    if(globalObj->isBleConnect())
     {
-        QString isbn = str.mid(0, 13);
-        if(isbn != ui->isbn_Edit->text().remove("-"))
-        {
-            ui->isbn_Edit->setText(isbn);
-            ui->isbn_Edit->setInputMask("999-9-9999-9999-9");
-            ui->isbn_Edit->setCursorPosition(17);
-            on_search_Btn_clicked();
-        }
+        globalObj->SocketWrite(QString("带我去,%1").arg(record.value("shelfNumber").toString()));
+        ui->Tip->setText(QString("小车正在启动，请前往%1号书架").arg(record.value("shelfNumber").toString()));
     }
     else
     {
-        ui->Tip->setText("条码错误，请重新扫描");
+        ui->Tip->setText(QString("请前往%1号书架").arg(record.value("shelfNumber").toString()));
     }
 }
 

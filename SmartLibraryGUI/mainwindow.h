@@ -29,9 +29,6 @@ private slots:
     void bleConnect();
     void bleDisconnect();
     void on_stop_Btn_clicked();
-
-    void on_start_Btn_clicked();
-
 private:
     Ui::MainWindow *ui;
     void closeEvent(QCloseEvent * event);

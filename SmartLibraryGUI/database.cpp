@@ -13,7 +13,10 @@ Database::Database(QObject *parent) : QObject{parent}
     }
     if(!database.isOpen())
     {
-        database.open();
+        if(QFile::exists("./database/books.smartlibrary"))
+        {
+            database.open();
+        }
     }
 }
 

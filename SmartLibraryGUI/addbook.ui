@@ -103,9 +103,9 @@ QPushButton{letter-spacing: 2px;}</string>
    </property>
    <property name="geometry">
     <rect>
-     <x>780</x>
+     <x>870</x>
      <y>10</y>
-     <width>171</width>
+     <width>81</width>
      <height>51</height>
     </rect>
    </property>
@@ -772,6 +772,22 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
+  <widget class="QPushButton" name="scan_Btn">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>780</x>
+     <y>10</y>
+     <width>81</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>扫描</string>
+   </property>
+  </widget>
   <zorder>backLabel</zorder>
   <zorder>isbn_Edit</zorder>
   <zorder>search_Btn</zorder>
@@ -801,6 +817,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
   <zorder>addBtn</zorder>
   <zorder>shelfNum_Edit</zorder>
   <zorder>label_11</zorder>
+  <zorder>scan_Btn</zorder>
  </widget>
  <resources/>
  <connections/>

@@ -12,6 +12,7 @@ addBook::addBook(QWidget *parent) : QDialog(parent), ui(new Ui::addBook)
     if(globalObj->isBleConnect())
     {
         ui->isbn_Edit->setPlaceholderText("请扫描或输入13位ISBN码");
+        ui->scan_Btn->setEnabled(true);
         connect(globalObj, &GlobalProcess::bleRead, this, &addBook::bleRead);
     }
 }
@@ -25,24 +26,21 @@ addBook::~addBook()
     }
 }
 
-void addBook::bleRead(QString str)
+void addBook::bleRead(QString isbn)
 {
+    if(isbn.startsWith("978") && isbn.length() == 13)
     {
-        if(str.startsWith("978") && str.length() > 13)
+        if(isbn != ui->isbn_Edit->text().remove("-"))
         {
-            QString isbn = str.mid(0, 13);
-            if(isbn != ui->isbn_Edit->text().remove("-"))
-            {
-                ui->isbn_Edit->setText(isbn);
-                ui->isbn_Edit->setInputMask("999-9-9999-9999-9");
-                ui->isbn_Edit->setCursorPosition(17);
-                on_search_Btn_clicked();
-            }
+            ui->isbn_Edit->setText(isbn);
+            ui->isbn_Edit->setInputMask("999-9-9999-9999-9");
+            ui->isbn_Edit->setCursorPosition(17);
+            on_search_Btn_clicked();
         }
-        else
-        {
-            ui->Tip->setText("条码错误，请重新扫描");
-        }
+    }
+    else
+    {
+        ui->Tip->setText("条码错误，请重新扫描");
     }
 }
 
@@ -77,6 +75,13 @@ void addBook::on_isbn_Edit_returnPressed()
     {
         on_search_Btn_clicked();
     }
+}
+
+void addBook::on_scan_Btn_clicked()
+{
+    ui->scan_Btn->setEnabled(false);
+    globalObj->SocketWrite("scan");
+    QTimer::singleShot(5000, this, [&](){ui->scan_Btn->setEnabled(true);});
 }
 
 void addBook::on_search_Btn_clicked()

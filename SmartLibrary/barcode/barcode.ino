@@ -1,18 +1,18 @@
 #include <SoftwareSerial.h>
-SoftwareSerial softSerial(10, 11); // (RX, TX)
+SoftwareSerial ble(4, 5); // (RX, TX)
 
 void setup() 
 {
   Serial.begin(9600);
-  softSerial.begin(9600);
+  ble.begin(9600);
 }
 
 void loop() 
 {
   // 蓝牙接收
-  if(softSerial.available())
+  if(ble.available())
   {
-    String BluetoothData = softSerial.readString();
+    String BluetoothData = ble.readString();
     Serial.println(BluetoothData);
   }
 
@@ -20,8 +20,7 @@ void loop()
   if(Serial.available())
   {
     String SerialData = Serial.readString();
-    Serial.println(SerialData);
-    softSerial.print(SerialData);
+    ble.print(SerialData);
   }
-  delay(500);
+  delay(200);
 }
