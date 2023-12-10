@@ -2,7 +2,7 @@
 SoftwareSerial uno1(2,3); //RX, TX
 SoftwareSerial uno3(5,6); //RX, TX
 
-String state = "start";
+String state = "stop";
 
 //RFID配置
 #include <SPI.h>
@@ -51,6 +51,7 @@ void loop()
   if(uno1.available())
   {
     String data = uno1.readString();
+    Serial.println(data);
     if(data == "stop")
     {
       state = "stop";
@@ -67,7 +68,16 @@ void loop()
   if(uno3.available())
   {
     String data = uno3.readString();
-    
+    if(data == "arrived")
+    {
+      uno1.print("servo_turn");
+      uno1.listen();
+    }
+    if(data == "return")
+    {
+      uno3.print("return");
+      uno1.listen();
+    }
   }
 
   if(state == "start")
@@ -94,12 +104,17 @@ void loop()
         }
       }
     }
+    delay(20);
   }
-  delay(20);
+  else
+  {
+    delay(200);
+  }
 }
 
 void check_Num(const int num)
 {
+  Serial.println(num);
   if(num == shelfNum)
   {
     uno3.print("turn");

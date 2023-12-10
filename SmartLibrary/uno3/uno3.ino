@@ -1,3 +1,6 @@
+#include <SoftwareSerial.h>
+SoftwareSerial uno2(52,53); //RX, TX
+
 //电机设置
 #define right_IN1 22
 #define right_IN2 23
@@ -38,10 +41,12 @@ void calc_pid();  //计算pid
 void motor_control(); //电机控制
 
 String state = "stop";
+int times = 0;
 
 void setup()
 {
-  Serial3.begin(9600);
+  Serial.begin(9600);
+  uno2.begin(9600);
   // 循迹引脚初始化
   pinMode (leftA_track_PIN, INPUT); //设置引脚为输入引脚
   pinMode (leftB_track_PIN, INPUT); //设置引脚为输入引脚
@@ -62,19 +67,16 @@ void setup()
   pinMode (right_IN4, OUTPUT); //设置引脚为输出引脚
   pinMode (right_ENA, OUTPUT); //设置引脚为输出引脚
   pinMode (right_ENB, OUTPUT); //设置引脚为输出引脚
-
-  // 电控状态初始化
-  motorsStop();
 }
 
 void loop()
 {
-  if(Serial3.available())
+  if(uno2.available())
   {
-    String data = Serial3.readString();
-    if(data == "satrt")
+    String data = uno2.readString();
+    Serial.println(data);
+    if(data == "start")
     {
-      state = "start";
       motorStart();
     }
     else if(data == "stop")
@@ -87,20 +89,27 @@ void loop()
     {
       state = "turn";
     }
+    else if(data == "return")
+    {
+      state = "return";
+    }
   }
 
-  if(state == "start")
+  if(state == "start" || state == "turn")
   {
     read_sensor_values(); //读取传感器值
     calc_pid(); //计算PID
     motor_control();  //驱动电机
     delay(delay_time);
   }
+  else if(state == "return")
+  {
+    
+  }
   else if(state == "stop")
   {
     delay(500);
   }
-  delay(20);
 }
 
 void read_sensor_values()
@@ -122,6 +131,12 @@ void read_sensor_values()
     error = 0;
     state = "stop";
     motorsStop();
+  }
+  // turn
+  else if((sensor[1] == 0) && state == "turn" && times < 5)
+  {
+    error = small_left;
+    times++;
   }
   else if((sensor[0] == 1) && (sensor[1] == 1) && (sensor[2] == 1) && (sensor[3] == 1) && (sensor[4] == 1))
   {//                      1 1 1 1 1按原来走
@@ -245,6 +260,7 @@ void motorsWrite(int speedL, int speedR)
 
 void motorStart()
 {
+  state = "start";
   digitalWrite(left_IN1, 1);
   digitalWrite(left_IN2, 0);
   digitalWrite(left_IN3, 0);
@@ -261,6 +277,8 @@ void motorStart()
 
 void motorsStop() 
 {
+  state = "arrived";
+  uno2.print("arrived");
   digitalWrite(left_IN1, 0);
   digitalWrite(left_IN2, 0);
   digitalWrite(left_IN3, 0);
@@ -275,5 +293,5 @@ void motorsStop()
   analogWrite(right_ENB, 0);
 
   error = 0, P = 0, I = 0, D = 0, PID_value = 0; 
-  previous_error = 0, previous_I = 0;
+  previous_error = 0, previous_I = 0, times = 0;
 }
