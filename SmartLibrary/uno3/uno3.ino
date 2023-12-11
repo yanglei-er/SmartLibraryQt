@@ -26,7 +26,7 @@ float error = 0, P = 0, I = 0, D = 0, PID_value = 0;//pid直道参数
 float previous_error = 0, previous_I = 0;           //误差值 
 int sensor[5] = {0, 0, 0, 0, 0};                    //传感器状态
 
-static int initial_motor_speed = 80;               //初始速度
+static int initial_motor_speed = 90;               //初始速度
 #define big_left -4
 #define small_left -2
 #define stright 0
@@ -36,7 +36,8 @@ static int initial_motor_speed = 80;               //初始速度
 #define turn_min 0
 #define delay_time 50
 
-void read_sensor_values();  //读取初值 
+void read_sensor_values_forward();  //前进读取巡线
+void read_sensor_values_return(); //返回读取巡线
 void calc_pid();  //计算pid 
 void motor_control(); //电机控制
 
@@ -97,14 +98,17 @@ void loop()
 
   if(state == "start" || state == "turn")
   {
-    read_sensor_values(); //读取传感器值
+    read_sensor_values_forward(); //读取传感器值
     calc_pid(); //计算PID
     motor_control();  //驱动电机
     delay(delay_time);
   }
   else if(state == "return")
   {
-    
+    read_sensor_values_return();
+    calc_pid();
+    motor_control();
+    delay(delay_time);
   }
   else if(state == "stop")
   {
@@ -112,7 +116,7 @@ void loop()
   }
 }
 
-void read_sensor_values()
+void read_sensor_values_forward()
 {
   sensor[0] = digitalRead(leftA_track_PIN);
   sensor[1] = digitalRead(leftB_track_PIN);
@@ -162,6 +166,11 @@ void read_sensor_values()
   {
     error = big_left;//         0 1 1 1 1 大左转
   }
+}
+
+void read_sensor_values_return()
+{
+
 }
 
 void calc_pid()
