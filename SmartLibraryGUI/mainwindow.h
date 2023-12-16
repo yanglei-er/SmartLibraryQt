@@ -28,7 +28,6 @@ private slots:
     // 蓝牙信号
     void bleConnect();
     void bleDisconnect();
-    void on_stop_Btn_clicked();
 private:
     Ui::MainWindow *ui;
     void closeEvent(QCloseEvent * event);

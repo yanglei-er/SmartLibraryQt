@@ -31,19 +31,20 @@ String getValue(String data, char separator, int index)
         strIndex[1] = (i == maxIndex) ? i+1 : i;
     }
   }
-
   return found>index ? data.substring(strIndex[0], strIndex[1]) : "";
 }
 
 void setup() 
 {
-  Serial.begin(9600);
-  uno1.begin(9600);
-  uno3.begin(9600);
-  uno1.listen();
   //RFID启动
   SPI.begin();
   mfrc522.PCD_Init(); 
+
+  Serial.begin(9600);
+  uno1.begin(9600);
+  uno3.begin(9600);
+  //监听uno1
+  uno1.listen();
 }
 
 void loop()
@@ -52,16 +53,23 @@ void loop()
   {
     String data = uno1.readString();
     Serial.println(data);
-    if(data == "stop")
+    if(data.startsWith("带我去"))
     {
-      state = "stop";
-      uno3.print("stop");
-    }
-    else if(data.startsWith("带我去"))
-    {
+      //更新状态为start
       state = "start";
+      //发送启动命令至uno3,并监听
       uno3.print("start");
+      uno3.listen();
+      //获取目标书架号
       shelfNum = getValue(data, ',', 1).toInt();
+    }
+    else if(data == "return")
+    {
+      //更新状态为return
+      state = "return";
+      //发送return指令至uno3，并监听
+      uno3.print("return");
+      uno3.listen();
     }
   }
 
@@ -70,24 +78,27 @@ void loop()
     String data = uno3.readString();
     if(data == "arrived")
     {
+      //如果到达，则发送servo_turn命令至uno1，并监听uno1
       uno1.print("servo_turn");
       uno1.listen();
     }
-    if(data == "return")
+    else if(data == "over")
     {
-      uno3.print("return");
+      //更新状态为stop
+      state = "stop";
+      //返回起点成功，发送指令至uno1，并监听
+      uno1.print("over");
       uno1.listen();
     }
   }
 
   if(state == "start")
   {
-      //RFID读取
+    //RFID读取
     if(mfrc522.PICC_IsNewCardPresent() && mfrc522.PICC_ReadCardSerial())
     {
       if(mfrc522.uid.uidByte[0] != nuidPICC[0] || mfrc522.uid.uidByte[1] != nuidPICC[1] || mfrc522.uid.uidByte[2] != nuidPICC[2] || mfrc522.uid.uidByte[3] != nuidPICC[3])
       {
-        // 保存读取到的UID
         for (byte i = 0; i < 4; i++)
         {
           nuidPICC[i] = mfrc522.uid.uidByte[i];
@@ -98,6 +109,7 @@ void loop()
         status = (MFRC522::StatusCode)mfrc522.MIFARE_Read(pageAddr, buffer, &size);
         if(status == MFRC522::STATUS_OK)
         {
+          //检测卡号
           check_Num(buffer[0]-48);
           mfrc522.PICC_HaltA();
           mfrc522.PCD_StopCrypto1();
@@ -115,9 +127,9 @@ void loop()
 void check_Num(const int num)
 {
   Serial.println(num);
+  //到达目标卡号则发送turn命令至uno3
   if(num == shelfNum)
   {
     uno3.print("turn");
-    uno3.listen();
   }
 }

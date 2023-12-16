@@ -21,7 +21,6 @@ private slots:
     void on_quit_Btn_clicked();
     void on_isbn_Edit_returnPressed();
     void on_find_Btn_clicked();
-
 private:
     Ui::viewBook *ui;
     GlobalProcess *globalObj = GlobalProcess::getInstance();
