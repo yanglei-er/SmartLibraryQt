@@ -4,7 +4,7 @@ CONFIG += c++17
 CONFIG -= debug_and_release
 
 TARGET = "SmartLibrary"
-VERSION = 0.1.5.0
+VERSION = 0.1.6.0
 QMAKE_TARGET_PRODUCT = "SmartLibrary"
 QMAKE_TARGET_DESCRIPTION = "Smart library"
 QMAKE_TARGET_COMPANY = "Yanglei"
