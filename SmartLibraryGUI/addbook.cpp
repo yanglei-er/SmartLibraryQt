@@ -42,6 +42,7 @@ void addBook::bleRead(QString isbn)
     {
         ui->Tip->setText("条码错误，请重新扫描");
     }
+    ui->scan_Btn->setEnabled(true);
 }
 
 void addBook::on_isbn_Edit_textChanged(const QString &str)
@@ -81,7 +82,6 @@ void addBook::on_scan_Btn_clicked()
 {
     ui->scan_Btn->setEnabled(false);
     globalObj->SocketWrite("scan");
-    QTimer::singleShot(5000, this, [&](){ui->scan_Btn->setEnabled(true);});
 }
 
 void addBook::on_search_Btn_clicked()

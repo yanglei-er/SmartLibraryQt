@@ -9,6 +9,7 @@ viewBook::viewBook(QWidget *parent) : QDialog(parent), ui(new Ui::viewBook)
     {
         ui->isbn_Edit->setPlaceholderText("请扫描或输入13位ISBN码");
         ui->scan_Btn->setEnabled(true);
+        ui->find_Btn->setEnabled(true);
         connect(globalObj, &GlobalProcess::bleRead, this, &viewBook::bleRead);
     }
 }
@@ -38,6 +39,7 @@ void viewBook::bleRead(QString isbn)
     {
         ui->Tip->setText("条码错误，请重新扫描");
     }
+    ui->scan_Btn->setEnabled(true);
 }
 
 void viewBook::on_isbn_Edit_textChanged(const QString &str)
@@ -69,7 +71,6 @@ void viewBook::on_scan_Btn_clicked()
 {
     ui->scan_Btn->setEnabled(false);
     globalObj->SocketWrite("scan");
-    QTimer::singleShot(5000, this, [&](){ui->scan_Btn->setEnabled(true);});
 }
 
 void viewBook::on_search_Btn_clicked()
@@ -124,15 +125,8 @@ void viewBook::on_find_Btn_clicked()
 {
     QString isbn = ui->isbn_Edit->text().remove("-");
     QSqlRecord record = sql.getOneBookInfo("isbn", isbn);
-    if(globalObj->isBleConnect())
-    {
-        globalObj->SocketWrite(QString("带我去,%1").arg(record.value("shelfNumber").toString()));
-        ui->Tip->setText(QString("小车正在启动，请前往%1号书架").arg(record.value("shelfNumber").toString()));
-    }
-    else
-    {
-        ui->Tip->setText(QString("请前往%1号书架").arg(record.value("shelfNumber").toString()));
-    }
+    globalObj->SocketWrite(QString("带我去,%1").arg(record.value("shelfNumber").toString()));
+    ui->Tip->setText(QString("小车正在启动，请前往%1号书架").arg(record.value("shelfNumber").toString()));
 }
 
 void viewBook::on_quit_Btn_clicked()

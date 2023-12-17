@@ -61,7 +61,6 @@ void MainWindow::bleConnect()
     ui->ble_attitude->setPixmap(TOOLS::loadImage(":/pic/green.png", QSize(30,30)));
     ui->borrowBook_Btn->setEnabled(true);
     ui->returnBook_Btn->setEnabled(true);
-    ui->viewBook_Btn->setEnabled(true);
 }
 
 void MainWindow::bleDisconnect()
@@ -69,7 +68,6 @@ void MainWindow::bleDisconnect()
     ui->ble_attitude->setPixmap(TOOLS::loadImage(":/pic/red.png", QSize(30,30)));
     ui->borrowBook_Btn->setEnabled(false);
     ui->returnBook_Btn->setEnabled(false);
-    ui->viewBook_Btn->setEnabled(false);
 }
 
 void MainWindow::closeEvent(QCloseEvent * event)

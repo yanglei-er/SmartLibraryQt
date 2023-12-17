@@ -398,6 +398,26 @@ QPushButton{letter-spacing: 2px;}</string>
      <string/>
     </property>
    </widget>
+   <widget class="QLabel" name="logo">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>90</y>
+      <width>150</width>
+      <height>150</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">image: url(:/pic/book.png);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <zorder>logo</zorder>
    <zorder>backLabel</zorder>
    <zorder>bluetooth_Btn</zorder>
    <zorder>quit_Btn</zorder>

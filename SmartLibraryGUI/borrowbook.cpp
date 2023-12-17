@@ -10,3 +10,9 @@ borrowBook::~borrowBook()
 {
     delete ui;
 }
+
+void borrowBook::on_quit_Btn_clicked()
+{
+    close();
+}
+

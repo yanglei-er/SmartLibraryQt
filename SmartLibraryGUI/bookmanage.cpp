@@ -9,7 +9,7 @@
 BookManage::BookManage(QWidget *parent) : QDialog(parent), ui(new Ui::BookManage)
 {
     ui->setupUi(this);
-    if(NetWork::online()&&Database::sqlConnected())
+    if(NetWork::online() && Database::sqlConnected())
     {
         ui->add_Btn->setEnabled(true);
         ui->net_attitude->setPixmap(TOOLS::loadImage(":/pic/green.png", QSize(30,30)));

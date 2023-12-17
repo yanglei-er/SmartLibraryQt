@@ -74,7 +74,14 @@ void findBook::on_listWidget_itemClicked(QListWidgetItem *item)
         ui->shelfNum_Edit->setText(record.value("shelfNumber").toString());
         ui->isBorrowed_Label->setPixmap(record.value("isBorrowed").toBool()?cross:tick);
         ui->name_Edit->setCursorPosition(0);
-        ui->find_Btn->setEnabled(true);
+        if(globalObj->isBleConnect())
+        {
+            ui->find_Btn->setEnabled(true);
+        }
+    }
+    else
+    {
+        ui->find_Btn->setEnabled(false);
     }
 }
 
@@ -82,15 +89,8 @@ void findBook::on_find_Btn_clicked()
 {
     QString isbn = bookisbns.at(ui->listWidget->currentRow());
     QSqlRecord record = sql.getOneBookInfo("isbn", isbn);
-    if(globalObj->isBleConnect())
-    {
-        globalObj->SocketWrite(QString("带我去,%1").arg(record.value("shelfNumber").toString()));
-        ui->Tip->setText(QString("小车正在启动，请前往%1号书架").arg(record.value("shelfNumber").toString()));
-    }
-    else
-    {
-        ui->Tip->setText(QString("请前往%1号书架").arg(record.value("shelfNumber").toString()));
-    }
+    globalObj->SocketWrite(QString("带我去,%1").arg(record.value("shelfNumber").toString()));
+    ui->Tip->setText(QString("小车正在启动，请前往%1号书架").arg(record.value("shelfNumber").toString()));
 }
 
 void findBook::on_quit_Btn_clicked()

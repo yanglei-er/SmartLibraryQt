@@ -825,9 +825,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
    </property>
    <property name="styleSheet">
     <string notr="true">QListWidget{background-color: rgba(235, 235, 235, 0.2);outline:none;}
-QListWidget::item{height: 114px;}
-QListWidget::item:hover {background-color: rgba(195,195,195,0.5);}
-QListWidget::item:selected {background-color: rgba(175,175,175,0.5);border-left: 5px solid rgb(44, 181, 255);}
+QListWidget::item{height: 110px;}
+QListWidget::item:hover {background-color: rgba(200,200,200,0.5);}
+QListWidget::item:selected {background-color: rgba(175,175,175,0.5);border-left: 5px solid rgb(120,120,120);}
 
 QScrollBar:vertical
 {
