@@ -24,6 +24,10 @@ void returnBook::bleRead(QString isbn)
             bookInfo();
         }
     }
+    else if(isbn == "over")
+    {
+        close();
+    }
     else
     {
         ui->Tip->setText("条码错误，请重新扫描");
@@ -82,8 +86,9 @@ void returnBook::on_return_Btn_clicked()
 {
     QString isbn = ui->isbn_Edit->text().remove("-");
     QSqlRecord record = sql.getOneBookInfo("isbn", isbn);
+    sql.returnBook(isbn);
     globalObj->SocketWrite(QString("带我去,%1").arg(record.value("shelfNumber").toString()));
-    ui->Tip->setText(QString("小车正在启动，前往%1号书架").arg(record.value("shelfNumber").toString()));
+    ui->Tip->setText("还书成功！");
     ui->return_Btn->setEnabled(false);
 }
 

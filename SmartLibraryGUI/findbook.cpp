@@ -9,11 +9,18 @@ findBook::findBook(QWidget *parent) : QDialog(parent), ui(new Ui::findBook)
     ui->bookName_Edit->setFocus();
     tick = TOOLS::loadImage(":/pic/tick.png", QSize(112,48));
     cross = TOOLS::loadImage(":/pic/cross.png", QSize(112,48));
+    connect(globalObj, &GlobalProcess::bleRead, this, &findBook::bleRead);
 }
 
 findBook::~findBook()
 {
+    disconnect(globalObj, &GlobalProcess::bleRead, this, &findBook::bleRead);
     delete ui;
+}
+
+void findBook::bleRead(QString isbn)
+{
+
 }
 
 void findBook::on_bookName_Edit_textChanged(const QString &str)

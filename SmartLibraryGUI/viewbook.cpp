@@ -35,6 +35,10 @@ void viewBook::bleRead(QString isbn)
             on_search_Btn_clicked();
         }
     }
+    else if(isbn == "over")
+    {
+        ui->Tip->setText("");
+    }
     else
     {
         ui->Tip->setText("条码错误，请重新扫描");

@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>还书</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QDialog#returnBook{border-image: url(:/pic/background_blurred.jpg);}
@@ -180,7 +180,7 @@ QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical
    </property>
    <property name="font">
     <font>
-     <pointsize>16</pointsize>
+     <pointsize>15</pointsize>
     </font>
    </property>
    <property name="styleSheet">

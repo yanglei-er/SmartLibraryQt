@@ -13,8 +13,14 @@ NetWork::~NetWork()
 bool NetWork::online()
 {
     QHostInfo info = QHostInfo::fromName("www.baidu.com");
-    if(info.addresses().isEmpty()){return false;}
-    else{return true;}
+    if(info.addresses().isEmpty())
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
 }
 
 void NetWork::setUAPool()

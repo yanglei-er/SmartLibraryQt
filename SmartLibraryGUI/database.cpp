@@ -174,6 +174,18 @@ void Database::delOneBook(const QString &isbn)
     sql.exec(QString("DELETE FROM main WHERE isbn = '%1'").arg(isbn));
 }
 
+void Database::borrowBook(const QString &isbn)
+{
+    QSqlQuery sql(database);
+    sql.exec(QString());
+}
+
+void Database::returnBook(const QString &isbn)
+{
+    QSqlQuery sql(database);
+    sql.exec(QString());
+}
+
 QList<QString> Database::getAllisbn()
 {
     QSqlQuery sql(database);

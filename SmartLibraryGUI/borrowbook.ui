@@ -252,22 +252,6 @@ QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical
     <string/>
    </property>
   </widget>
-  <widget class="QPushButton" name="search_Btn">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>870</x>
-     <y>10</y>
-     <width>81</width>
-     <height>51</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>查询</string>
-   </property>
-  </widget>
   <widget class="QLabel" name="label_11">
    <property name="geometry">
     <rect>
@@ -689,7 +673,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <bool>false</bool>
    </property>
    <property name="placeholderText">
-    <string>请输入13位ISBN码</string>
+    <string>请扫描13位ISBN码</string>
    </property>
    <property name="clearButtonEnabled">
     <bool>true</bool>
@@ -815,7 +799,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <rect>
      <x>780</x>
      <y>10</y>
-     <width>81</width>
+     <width>171</width>
      <height>51</height>
     </rect>
    </property>
@@ -871,7 +855,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
   <zorder>pressDate_Edit</zorder>
   <zorder>label_2</zorder>
   <zorder>borrow_Btn</zorder>
-  <zorder>search_Btn</zorder>
   <zorder>label_11</zorder>
   <zorder>label_8</zorder>
   <zorder>isBorrowed_Label</zorder>

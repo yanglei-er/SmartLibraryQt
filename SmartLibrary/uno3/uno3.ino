@@ -22,18 +22,18 @@ SoftwareSerial uno2(52,53); //RX, TX
 #define forward_rightA_track_PIN 10
 #define forward_rightB_track_PIN 9
 //返回
-#define return_leftA_track_PIN ?
-#define return_leftB_track_PIN ?
-#define return_middle_track_PIN ?
-#define return_rightA_track_PIN ?
-#define return_rightB_track_PIN ?
+#define return_leftA_track_PIN 42
+#define return_leftB_track_PIN 44
+#define return_middle_track_PIN 46
+#define return_rightA_track_PIN 48
+#define return_rightB_track_PIN 50
 //传感器状态
 int sensor[5] = {0, 0, 0, 0, 0};
 //循迹参数
 float Kp = 10, Ki = 0.5, Kd = 0;                    //pid弯道参数参数 
 float error = 0, P = 0, I = 0, D = 0, PID_value = 0;//pid直道参数 
 float previous_error = 0, previous_I = 0;           //误差值 
-static int initial_motor_speed = 90;               //初始速度
+static int initial_motor_speed = 80;               //初始速度
 //转弯参数
 #define big_left -4
 #define small_left -2
