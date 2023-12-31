@@ -7,11 +7,42 @@ findBook::findBook(QWidget *parent) : QDialog(parent), ui(new Ui::findBook)
 {
     ui->setupUi(this);
     ui->bookName_Edit->setFocus();
+    if(globalObj->isBleConnect())
+    {
+        connect(globalObj, &GlobalProcess::bleRead, this, &findBook::bleRead);
+    }
 }
 
 findBook::~findBook()
 {
+    if(globalObj->isBleConnect())
+    {
+        disconnect(globalObj, &GlobalProcess::bleRead, this, &findBook::bleRead);
+    }
     delete ui;
+}
+
+void findBook::bleRead(QString isbn)
+{
+    if(isbn == "over")
+    {
+        QSqlRecord record = sql.getOneBookInfo("isbn", bookisbns.at(ui->listWidget->currentRow()));
+        if(!record.value("isBorrowed").toBool())
+        {
+            if(QMessageBox::question(this, "找书成功", "是否借阅？") == QMessageBox::Yes)
+            {
+                QString isbn = bookisbns.at(ui->listWidget->currentRow());
+                sql.borrowBook(isbn);
+                ui->Tip->setText(QString("借书成功"));
+                ui->isBorrowed_Label->setPixmap(cross);
+                ui->find_Btn->setEnabled(false);
+            }
+        }
+        else
+        {
+            ui->Tip->setText(QString("找书成功"));
+        }
+    }
 }
 
 void findBook::on_bookName_Edit_textChanged(const QString &str)

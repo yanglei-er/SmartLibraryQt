@@ -88,10 +88,10 @@ QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical
     <enum>Qt::ScrollBarAlwaysOff</enum>
    </property>
    <property name="verticalScrollMode">
-    <enum>QAbstractItemView::ScrollPerItem</enum>
+    <enum>QAbstractItemView::ScrollPerPixel</enum>
    </property>
    <property name="horizontalScrollMode">
-    <enum>QAbstractItemView::ScrollPerItem</enum>
+    <enum>QAbstractItemView::ScrollPerPixel</enum>
    </property>
    <property name="sortingEnabled">
     <bool>false</bool>

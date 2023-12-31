@@ -34,7 +34,6 @@ private:
     Ui::BookManage *ui;
     int index = 0;
     int indexMax = 0;
-    int addNumber = 0;
     QPixmap tick = TOOLS::loadImage(":/pic/tick.png", QSize(112,48));
     QPixmap cross = TOOLS::loadImage(":/pic/cross.png", QSize(112,48));
     Database sql;

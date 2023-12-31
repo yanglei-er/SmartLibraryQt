@@ -19,7 +19,7 @@ private slots:
     void on_scan_Btn_clicked();
     void on_search_Btn_clicked();
     void on_isbn_Edit_returnPressed();
-    void on_find_Btn_clicked();
+    void on_borrow_return_Btn_clicked();
     void on_quit_Btn_clicked();
 private:
     Ui::viewBook *ui;

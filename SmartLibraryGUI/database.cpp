@@ -194,3 +194,13 @@ QList<QString> Database::getAllisbn()
     }
     return isbnList;
 }
+
+void Database::mergeDatabase(const QString &filepath)
+{
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "second");
+    db.setDatabaseName(filepath);
+    if(db.open())
+    {
+
+    }
+}

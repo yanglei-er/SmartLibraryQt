@@ -27,6 +27,7 @@ public:
     void delOneBook(const QString &isbn);
     void borrowBook(const QString &isbn);
     void returnBook(const QString &isbn);
+    void mergeDatabase(const QString &filepath);
 private:
     QSqlDatabase database;
 };

@@ -36,7 +36,9 @@ void viewBook::bleRead(QString isbn)
     }
     else if(isbn == "over")
     {
-        ui->Tip->setText("已成功完成找书，3秒后自动退出");
+        ui->Tip->setText("还书成功，3秒后自动退出");
+        ui->isBorrowed_Label->setPixmap(tick);
+        sql.returnBook(ui->isbn_Edit->text().remove("-"));
         QTimer::singleShot(3000, this, [&](){close();});
     }
     else
@@ -117,30 +119,49 @@ void viewBook::on_search_Btn_clicked()
         ui->bookDesc_Edit->setText(record.value("bookDesc").toString());
         ui->shelfNum_Edit->setText(record.value("shelfNumber").toString());
         ui->isBorrowed_Label->setPixmap(record.value("isBorrowed").toBool()?cross:tick);
-        ui->find_Btn->setEnabled(true);
+        ui->borrow_return_Btn->setEnabled(true);
+        if(record.value("isBorrowed").toBool())
+        {
+            ui->borrow_return_Btn->setText("还书");
+        }
+        else
+        {
+            ui->borrow_return_Btn->setText("借书");
+        }
     }
     else
     {
         ui->Tip->setText("此书不在数据库中");
-        ui->find_Btn->setEnabled(false);
+        ui->borrow_return_Btn->setEnabled(false);
     }
     ui->search_Btn->setEnabled(false);
 }
 
-void viewBook::on_find_Btn_clicked()
+void viewBook::on_borrow_return_Btn_clicked()
 {
-    QString isbn = ui->isbn_Edit->text().remove("-");
-    QSqlRecord record = sql.getOneBookInfo("isbn", isbn);
-    if(globalObj->isBleConnect())
+    if(ui->borrow_return_Btn->text() == "借书")
     {
-        globalObj->SocketWrite(QString("带我去,%1").arg(record.value("shelfNumber").toString()));
-        ui->Tip->setText(QString("小车正在启动，请前往%1号书架").arg(record.value("shelfNumber").toString()));
+        QString isbn = ui->isbn_Edit->text().remove("-");
+        sql.borrowBook(isbn);
+        ui->Tip->setText(QString("借书成功"));
+        ui->isBorrowed_Label->setPixmap(cross);
+        ui->borrow_return_Btn->setEnabled(false);
     }
     else
     {
-        ui->Tip->setText(QString("蓝牙未连接，请前往%1号书架").arg(record.value("shelfNumber").toString()));
+        QString isbn = ui->isbn_Edit->text().remove("-");
+        QSqlRecord record = sql.getOneBookInfo("isbn", isbn);
+        if(globalObj->isBleConnect())
+        {
+            globalObj->SocketWrite(QString("带我去,%1").arg(record.value("shelfNumber").toString()));
+            ui->Tip->setText(QString("小车正在启动，请前往%1号书架").arg(record.value("shelfNumber").toString()));
+        }
+        else
+        {
+            ui->Tip->setText(QString("蓝牙未连接，请前往%1号书架").arg(record.value("shelfNumber").toString()));
+        }
+        ui->borrow_return_Btn->setEnabled(false);
     }
-    ui->find_Btn->setEnabled(false);
 }
 
 void viewBook::on_quit_Btn_clicked()

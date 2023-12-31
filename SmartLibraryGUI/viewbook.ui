@@ -216,33 +216,6 @@ QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="Tip">
-   <property name="geometry">
-    <rect>
-     <x>778</x>
-     <y>350</y>
-     <width>171</width>
-     <height>61</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>16</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgba(255, 0, 0, 0.6);</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-   </property>
-   <property name="wordWrap">
-    <bool>true</bool>
-   </property>
-  </widget>
   <widget class="QPushButton" name="quit_Btn">
    <property name="enabled">
     <bool>true</bool>
@@ -833,7 +806,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <string/>
    </property>
   </widget>
-  <widget class="QPushButton" name="find_Btn">
+  <widget class="QPushButton" name="borrow_return_Btn">
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -849,7 +822,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <enum>Qt::StrongFocus</enum>
    </property>
    <property name="text">
-    <string>带我去</string>
+    <string>借书/还书</string>
    </property>
   </widget>
   <widget class="QPushButton" name="scan_Btn">
@@ -866,6 +839,33 @@ li.checked::marker { content: &quot;\2612&quot;; }
    </property>
    <property name="text">
     <string>扫描</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Tip">
+   <property name="geometry">
+    <rect>
+     <x>780</x>
+     <y>350</y>
+     <width>171</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgba(255, 0, 0, 0.6);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
    </property>
   </widget>
  </widget>

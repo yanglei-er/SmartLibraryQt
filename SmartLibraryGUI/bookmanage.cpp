@@ -74,7 +74,8 @@ void BookManage::on_import_Btn_clicked()
     QString filepath = QFileDialog::getOpenFileName(this, "导入数据库", QStandardPaths::writableLocation(QStandardPaths::DesktopLocation), "智慧图书库(*.smartlibrary)");
     if(!filepath.isEmpty())
     {
-        QMessageBox::warning(nullptr, "报告", "导入部分暂未完善，以后再来体验吧！");
+        sql.mergeDatabase(filepath);
+        QMessageBox::information(this, "导入数据库", "导入成功");
     }
 }
 
@@ -93,19 +94,10 @@ void BookManage::on_add_Btn_clicked()
     w.exec();
     if(!w.books.isEmpty())
     {
-        for(int i = 0; i < w.books.length(); i++)
+        if(index == indexMax)
         {
-            QSqlRecord record = sql.getOneBookInfo("isbn", w.books.at(i));
-            QListWidgetItem *item = new QListWidgetItem();
-            bookCell *book = new bookCell();
-            book->bookName->setText(QString("《%1》").arg(record.value("bookName").toString()));
-            book->press->setText(record.value("press").toString());
-            book->author->setText(record.value("author").toString());
-            book->bookDesc->setText(record.value("bookDesc").toString());
-            book->attitude->setPixmap((record.value("isBorrowed").toBool())?cross:tick);
-            ui->listWidget->insertItem(0 ,item);
-            ui->listWidget->setItemWidget(item, book);
-            addNumber++;
+            indexMax = indexMax + w.books.length();
+            addBookToList(6);
         }
     }
 }
@@ -124,19 +116,7 @@ void BookManage::on_listWidget_itemDoubleClicked(QListWidgetItem *item)
 void BookManage::on_edit_Btn_clicked()
 {
     int currentIndex = ui->listWidget->currentRow();
-    int editIndex = currentIndex;
-    if(addNumber)
-    {
-        if(currentIndex < addNumber)
-        {
-            editIndex = indexMax - currentIndex;
-        }
-        else
-        {
-            editIndex = currentIndex - addNumber;
-        }
-    }
-    QString isbn = sql.getOneBookInfoByIndex(editIndex).value("isbn").toString();
+    QString isbn = sql.getOneBookInfoByIndex(currentIndex).value("isbn").toString();
     editBook w(isbn);
     w.exec();
     if(w.needUpdate)

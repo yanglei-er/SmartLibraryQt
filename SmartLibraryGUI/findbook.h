@@ -2,6 +2,7 @@
 #define FINDBOOK_H
 #include <QDialog>
 #include <QListWidgetItem>
+#include <QMessageBox>
 #include "database.h"
 #include "globalprocess.h"
 #include "tools.h"
@@ -15,6 +16,7 @@ public:
     explicit findBook(QWidget *parent = nullptr);
     ~findBook();
 private slots:
+    void bleRead(QString isbn);
     void on_bookName_Edit_textChanged(const QString &str);
     void on_listWidget_itemClicked(QListWidgetItem *item);
     void on_find_Btn_clicked();

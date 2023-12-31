@@ -89,7 +89,7 @@ void borrowBook::on_borrow_Btn_clicked()
 {
     QString isbn = ui->isbn_Edit->text().remove("-");
     sql.borrowBook(isbn);
-    ui->Tip->setText(QString("成功借书"));
+    ui->Tip->setText(QString("借书成功"));
     ui->isBorrowed_Label->setPixmap(cross);
     ui->borrow_Btn->setEnabled(false);
 }
