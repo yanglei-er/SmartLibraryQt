@@ -16,7 +16,7 @@ public:
     static bool sqlConnected();
     static void close();
     bool exists(const QString &isbn);
-    QString addBook(const QString &isbn, const QString &name, const QString &author, const QString &press, const QString &pressDate, const QString &pressPlace, const qreal &price, const QString &clcName, const QString &bookDesc, const QString &pages, const QString &words, const int &shelfNumber, const int isBorrowed = 0);
+    void addBook(const QString &isbn, const QString &name, const QString &author, const QString &press, const QString &pressDate, const QString &pressPlace, const qreal &price, const QString &clcName, const QString &bookDesc, const QString &pages, const QString &words, const int &shelfNumber, const int isBorrowed = 0);
     qint32 getBookNum();
     QSqlRecord getOneBookInfo(const QString &type, const QString &str);
     QList<QSqlRecord> getBooksInfo(const QString &type, const QString &str);

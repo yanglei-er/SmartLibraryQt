@@ -57,7 +57,7 @@ bool Database::exists(const QString &isbn)
     }
 }
 
-QString Database::addBook(const QString &isbn, const QString &name, const QString &author, const QString &press, const QString &pressDate, const QString &pressPlace, const qreal &price, const QString &clcName, const QString &bookDesc, const QString &pages, const QString &words, const int &shelfNumber, const int isBorrowed)
+void Database::addBook(const QString &isbn, const QString &name, const QString &author, const QString &press, const QString &pressDate, const QString &pressPlace, const qreal &price, const QString &clcName, const QString &bookDesc, const QString &pages, const QString &words, const int &shelfNumber, const int isBorrowed)
 {
     QSqlQuery sql(database);
     sql.prepare("insert into main values (?,?,?,?,?,?,?,?,?,?,?,?,?)");
@@ -74,14 +74,7 @@ QString Database::addBook(const QString &isbn, const QString &name, const QStrin
     sql.addBindValue(words);
     sql.addBindValue(shelfNumber);
     sql.addBindValue(isBorrowed);
-    if(sql.exec())
-    {
-        return "";
-    }
-    else
-    {
-        return sql.lastError().text();
-    }
+    sql.exec();
 }
 
 void Database::editBook(const QString &isbn, const QString &name, const QString &author, const QString &press, const QString &pressDate, const QString &pressPlace, const qreal &price, const QString &clcName, const QString &bookDesc, const QString &pages, const QString &words, const int &shelfNumber, const int isBorrowed)
@@ -177,13 +170,17 @@ void Database::delOneBook(const QString &isbn)
 void Database::borrowBook(const QString &isbn)
 {
     QSqlQuery sql(database);
-    sql.exec(QString());
+    sql.prepare(QString("UPDATE main SET isBorrowed = 1 WHERE isbn = ?"));
+    sql.addBindValue(isbn);
+    sql.exec();
 }
 
 void Database::returnBook(const QString &isbn)
 {
     QSqlQuery sql(database);
-    sql.exec(QString());
+    sql.prepare(QString("UPDATE main SET isBorrowed = 0 WHERE isbn = ?"));
+    sql.addBindValue(isbn);
+    sql.exec();
 }
 
 QList<QString> Database::getAllisbn()

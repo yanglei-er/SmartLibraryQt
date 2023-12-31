@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>我要借书</string>
+   <string>借书</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QDialog#borrowBook{border-image: url(:/pic/background_blurred.jpg);}

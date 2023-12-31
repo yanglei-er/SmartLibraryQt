@@ -13,14 +13,7 @@ QString BookInfo::getBookFromNet(const QString &isbn)
         return "无法访问网络数据库";
     }
     QString result = JsonParse(metadata);
-    if(result.isEmpty())
-    {
-        return "";
-    }
-    else
-    {
-        return result;
-    }
+    return result;
 }
 
 QString BookInfo::JsonParse(const QByteArray &json)
@@ -41,7 +34,7 @@ QString BookInfo::JsonParse(const QByteArray &json)
         bookDesc = dataObj.value("bookDesc").toString();
         pages = dataObj.value("pages").toString();
         words = dataObj.value("words").toString();
-        return "";
+        return "成功";
     }
     else
     {

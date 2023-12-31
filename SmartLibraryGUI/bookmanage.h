@@ -7,6 +7,7 @@
 #include <QFileDialog>
 #include <QStandardPaths>
 #include "database.h"
+#include "tools.h"
 
 namespace Ui {class BookManage;}
 
@@ -34,8 +35,8 @@ private:
     int index = 0;
     int indexMax = 0;
     int addNumber = 0;
-    QPixmap tick;
-    QPixmap cross;
+    QPixmap tick = TOOLS::loadImage(":/pic/tick.png", QSize(112,48));
+    QPixmap cross = TOOLS::loadImage(":/pic/cross.png", QSize(112,48));
     Database sql;
 };
 

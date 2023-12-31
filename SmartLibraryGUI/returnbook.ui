@@ -180,7 +180,7 @@ QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical
    </property>
    <property name="font">
     <font>
-     <pointsize>15</pointsize>
+     <pointsize>16</pointsize>
     </font>
    </property>
    <property name="styleSheet">

@@ -1,31 +1,21 @@
 #include "findbook.h"
 #include "findbookcell.h"
-#include "tools.h"
+
 #include "ui_findbook.h"
 
 findBook::findBook(QWidget *parent) : QDialog(parent), ui(new Ui::findBook)
 {
     ui->setupUi(this);
     ui->bookName_Edit->setFocus();
-    tick = TOOLS::loadImage(":/pic/tick.png", QSize(112,48));
-    cross = TOOLS::loadImage(":/pic/cross.png", QSize(112,48));
-    connect(globalObj, &GlobalProcess::bleRead, this, &findBook::bleRead);
 }
 
 findBook::~findBook()
 {
-    disconnect(globalObj, &GlobalProcess::bleRead, this, &findBook::bleRead);
     delete ui;
-}
-
-void findBook::bleRead(QString isbn)
-{
-
 }
 
 void findBook::on_bookName_Edit_textChanged(const QString &str)
 {
-    ui->find_Btn->setEnabled(false);
     ui->listWidget->clear();
     on_listWidget_itemClicked(nullptr);
     if(!str.isEmpty())
@@ -81,10 +71,7 @@ void findBook::on_listWidget_itemClicked(QListWidgetItem *item)
         ui->shelfNum_Edit->setText(record.value("shelfNumber").toString());
         ui->isBorrowed_Label->setPixmap(record.value("isBorrowed").toBool()?cross:tick);
         ui->name_Edit->setCursorPosition(0);
-        if(globalObj->isBleConnect())
-        {
-            ui->find_Btn->setEnabled(true);
-        }
+        ui->find_Btn->setEnabled(true);
     }
     else
     {
@@ -96,8 +83,16 @@ void findBook::on_find_Btn_clicked()
 {
     QString isbn = bookisbns.at(ui->listWidget->currentRow());
     QSqlRecord record = sql.getOneBookInfo("isbn", isbn);
-    globalObj->SocketWrite(QString("带我去,%1").arg(record.value("shelfNumber").toString()));
-    ui->Tip->setText(QString("小车正在启动，请前往%1号书架").arg(record.value("shelfNumber").toString()));
+    if(globalObj->isBleConnect())
+    {
+        globalObj->SocketWrite(QString("带我去,%1").arg(record.value("shelfNumber").toString()));
+        ui->Tip->setText(QString("小车正在启动，请前往%1号书架").arg(record.value("shelfNumber").toString()));
+    }
+    else
+    {
+        ui->Tip->setText(QString("蓝牙未连接，请前往%1号书架").arg(record.value("shelfNumber").toString()));
+    }
+    ui->find_Btn->setEnabled(false);
 }
 
 void findBook::on_quit_Btn_clicked()

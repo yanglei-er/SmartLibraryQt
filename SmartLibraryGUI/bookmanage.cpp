@@ -4,7 +4,6 @@
 #include "editbook.h"
 #include "network.h"
 #include "bookcell.h"
-#include "tools.h"
 
 BookManage::BookManage(QWidget *parent) : QDialog(parent), ui(new Ui::BookManage)
 {
@@ -22,9 +21,6 @@ BookManage::BookManage(QWidget *parent) : QDialog(parent), ui(new Ui::BookManage
         indexMax = sql.getBookNum()-1;
         setWindowTitle(QString("图书管理 - 共 %1 本书").arg(indexMax+1));
         connect(ui->listWidget->verticalScrollBar(), &QScrollBar::valueChanged, this, &BookManage::scroll);
-
-        tick = TOOLS::loadImage(":/pic/tick.png", QSize(112,48));
-        cross = TOOLS::loadImage(":/pic/cross.png", QSize(112,48));
 
         if(indexMax >= 0)
         {

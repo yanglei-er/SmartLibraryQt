@@ -19,7 +19,7 @@ private slots:
     void bleRead(QString isbn);
     void on_scan_Btn_clicked();
     void on_borrow_Btn_clicked();
-    void on_quit_Btn_clicked();    
+    void on_quit_Btn_clicked();
 private:
     Ui::borrowBook *ui;
     Database sql;

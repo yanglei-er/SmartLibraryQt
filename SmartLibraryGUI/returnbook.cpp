@@ -26,7 +26,10 @@ void returnBook::bleRead(QString isbn)
     }
     else if(isbn == "over")
     {
-        close();
+        ui->Tip->setText("还书成功，3秒后自动退出");
+        ui->isBorrowed_Label->setPixmap(tick);
+        sql.returnBook(ui->isbn_Edit->text().remove("-"));
+        QTimer::singleShot(3000, this, [&](){close();});
     }
     else
     {
@@ -37,6 +40,7 @@ void returnBook::bleRead(QString isbn)
 
 void returnBook::bookInfo()
 {
+    ui->return_Btn->setEnabled(false);
     ui->name_Edit->clear();
     ui->author_Edit->clear();
     ui->press_Edit->clear();
@@ -67,12 +71,18 @@ void returnBook::bookInfo()
         ui->bookDesc_Edit->setText(record.value("bookDesc").toString());
         ui->shelfNum_Edit->setText(record.value("shelfNumber").toString());
         ui->isBorrowed_Label->setPixmap(record.value("isBorrowed").toBool()?cross:tick);
-        ui->return_Btn->setEnabled(true);
+        if(record.value("isBorrowed").toBool())
+        {
+            ui->return_Btn->setEnabled(true);
+        }
+        else
+        {
+            ui->Tip->setText("本书未借出！");
+        }
     }
     else
     {
         ui->Tip->setText("此书不在数据库中");
-        ui->return_Btn->setEnabled(false);
     }
 }
 
@@ -86,9 +96,8 @@ void returnBook::on_return_Btn_clicked()
 {
     QString isbn = ui->isbn_Edit->text().remove("-");
     QSqlRecord record = sql.getOneBookInfo("isbn", isbn);
-    sql.returnBook(isbn);
     globalObj->SocketWrite(QString("带我去,%1").arg(record.value("shelfNumber").toString()));
-    ui->Tip->setText("还书成功！");
+    ui->Tip->setText(QString("小车正在启动，前往%1号书架").arg(record.value("shelfNumber").toString()));
     ui->return_Btn->setEnabled(false);
 }
 

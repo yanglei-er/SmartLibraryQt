@@ -9,7 +9,6 @@ viewBook::viewBook(QWidget *parent) : QDialog(parent), ui(new Ui::viewBook)
     {
         ui->isbn_Edit->setPlaceholderText("请扫描或输入13位ISBN码");
         ui->scan_Btn->setEnabled(true);
-        ui->find_Btn->setEnabled(true);
         connect(globalObj, &GlobalProcess::bleRead, this, &viewBook::bleRead);
     }
 }
@@ -37,7 +36,8 @@ void viewBook::bleRead(QString isbn)
     }
     else if(isbn == "over")
     {
-        ui->Tip->setText("");
+        ui->Tip->setText("已成功完成找书，3秒后自动退出");
+        QTimer::singleShot(3000, this, [&](){close();});
     }
     else
     {
@@ -68,6 +68,14 @@ void viewBook::on_isbn_Edit_textChanged(const QString &str)
     {
         ui->search_Btn->setEnabled(true);
         ui->attitude_label->setPixmap(TOOLS::loadImage(":/pic/right.png", QSize(40,40)));
+    }
+}
+
+void viewBook::on_isbn_Edit_returnPressed()
+{
+    if(ui->isbn_Edit->text().length() == 17)
+    {
+        on_search_Btn_clicked();
     }
 }
 
@@ -109,28 +117,30 @@ void viewBook::on_search_Btn_clicked()
         ui->bookDesc_Edit->setText(record.value("bookDesc").toString());
         ui->shelfNum_Edit->setText(record.value("shelfNumber").toString());
         ui->isBorrowed_Label->setPixmap(record.value("isBorrowed").toBool()?cross:tick);
+        ui->find_Btn->setEnabled(true);
     }
     else
     {
         ui->Tip->setText("此书不在数据库中");
+        ui->find_Btn->setEnabled(false);
     }
     ui->search_Btn->setEnabled(false);
-}
-
-void viewBook::on_isbn_Edit_returnPressed()
-{
-    if(ui->isbn_Edit->text().length() == 17)
-    {
-        on_search_Btn_clicked();
-    }
 }
 
 void viewBook::on_find_Btn_clicked()
 {
     QString isbn = ui->isbn_Edit->text().remove("-");
     QSqlRecord record = sql.getOneBookInfo("isbn", isbn);
-    globalObj->SocketWrite(QString("带我去,%1").arg(record.value("shelfNumber").toString()));
-    ui->Tip->setText(QString("小车正在启动，请前往%1号书架").arg(record.value("shelfNumber").toString()));
+    if(globalObj->isBleConnect())
+    {
+        globalObj->SocketWrite(QString("带我去,%1").arg(record.value("shelfNumber").toString()));
+        ui->Tip->setText(QString("小车正在启动，请前往%1号书架").arg(record.value("shelfNumber").toString()));
+    }
+    else
+    {
+        ui->Tip->setText(QString("蓝牙未连接，请前往%1号书架").arg(record.value("shelfNumber").toString()));
+    }
+    ui->find_Btn->setEnabled(false);
 }
 
 void viewBook::on_quit_Btn_clicked()
