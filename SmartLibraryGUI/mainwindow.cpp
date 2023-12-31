@@ -42,7 +42,7 @@ void MainWindow::on_bookMange_Btn_clicked()
 
 void MainWindow::on_settings_Btn_clicked()
 {
-    QMessageBox::warning(nullptr, "报告", "设置功能暂未完善，以后再来体验吧！");
+    QMessageBox::warning(nullptr, "抱歉", "设置功能暂未完善，以后再来体验吧！");
 }
 
 void MainWindow::on_reboot_Btn_clicked()

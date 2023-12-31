@@ -99,6 +99,10 @@ void BookManage::on_add_Btn_clicked()
             indexMax = indexMax + w.books.length();
             addBookToList(6);
         }
+        else
+        {
+            indexMax = indexMax + w.books.length();
+        }
     }
 }
 
@@ -158,7 +162,7 @@ void BookManage::on_del_Btn_clicked()
 
 void BookManage::on_find_btn_clicked()
 {
-
+    QMessageBox::warning(nullptr, "抱歉", "设置功能暂未完善，以后再来体验吧！");
 }
 
 void BookManage::on_quit_Btn_clicked()
