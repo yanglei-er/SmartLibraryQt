@@ -201,6 +201,38 @@ void Database::mergeDatabase(const QString &filepath)
     db.setDatabaseName(filepath);
     if(db.open())
     {
+        database.transaction();
+        QSqlQuery sql(database);
+        QSqlQuery sql_second(db);
+        QString isbn;
 
+        sql_second.exec("SELECT * from main");
+        while(sql_second.next())
+        {
+            isbn = sql_second.value("isbn").toString();
+            sql.exec(QString("SELECT * FROM main WHERE isbn = '%1'").arg(isbn));
+            if(!sql.next())
+            {
+                QSqlQuery sql(database);
+                sql.prepare("insert into main values (?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                sql.addBindValue(sql_second.value("isbn").toString());
+                sql.addBindValue(sql_second.value("name").toString());
+                sql.addBindValue(sql_second.value("author").toString());
+                sql.addBindValue(sql_second.value("press").toString());
+                sql.addBindValue(sql_second.value("pressDate").toString());
+                sql.addBindValue(sql_second.value("pressPlace").toString());
+                sql.addBindValue(sql_second.value("price").toFloat());
+                sql.addBindValue(sql_second.value("clcName").toString());
+                sql.addBindValue(sql_second.value("bookDesc").toString());
+                sql.addBindValue(sql_second.value("pages").toString());
+                sql.addBindValue(sql_second.value("words").toString());
+                sql.addBindValue(sql_second.value("shelfNumber").toInt());
+                sql.addBindValue(sql_second.value("isBorrowed").toInt());
+                sql.exec();
+            }
+        }
+        database.commit();
+        db.close();
+        QSqlDatabase::removeDatabase("second");
     }
 }
