@@ -1,16 +1,17 @@
 #include <SoftwareSerial.h>
 SoftwareSerial ble(4, 5); // (RX, TX)
-SoftwareSerial barcode(9, 6); //RX, TX
+SoftwareSerial barcode(6, 9); //RX, TX
 SoftwareSerial uno2(2, 3); //RX, TX
+
+#define bar_trig 10
 
 //舵机设置
 #include <Servo.h>
-Servo servo_left;
-Servo servo_right;
+Servo left_servo;
+Servo right_servo;
 #define LEFT_SERVO_PIN 12
 #define RIGHT_SERVO_PIN 13
 
-#define bar_trig 10
 
 void setup()
 {
@@ -18,10 +19,10 @@ void setup()
   digitalWrite(bar_trig, HIGH);
 
   //舵机归位
-  servo_left.attach(LEFT_SERVO_PIN);
-  servo_right.attach(RIGHT_SERVO_PIN);
-  servo_left.write(86);
-  servo_right.write(94);
+  left_servo.attach(LEFT_SERVO_PIN);
+  right_servo.attach(RIGHT_SERVO_PIN);
+  left_servo.write(47);
+  right_servo.write(30);
 
   Serial.begin(9600);
   barcode.begin(9600);
@@ -56,6 +57,7 @@ void loop()
     digitalWrite(bar_trig, HIGH);  
     String isbn = barcode.readString();
     ble.print(isbn);
+    Serial.println(isbn);
     //扫描完成，再次监听蓝牙
     ble.listen();
   }
@@ -66,8 +68,9 @@ void loop()
     if(data == "servo_turn")
     {
       //执行转动命令
-      servocontrol();
+      servo_turn();
       //发送返回指令至uno2
+      delay(6000);
       uno2.print("return");
     }
     else if(data == "over")
@@ -80,19 +83,20 @@ void loop()
   delay(200);
 }
 
-void servocontrol()
+void servo_turn()
 {
-  for(int angle = 0; angle <=40; angle++)
+  for(int angle = 0; angle <= 35; angle++)
   {
-    servo_left.write(86-angle);
-    servo_right.write(94+angle);
+    right_servo.write(30+angle);
+    left_servo.write(47-angle);
     delay(20);
   }
-  delay(5000);
-  for (int angle = 0; angle <=40; angle++)
+  delay(2000);
+  for (int angle = 0; angle <= 35; angle++)
   {
-    servo_left.write(56+angle);
-    servo_right.write(124-angle);
+    right_servo.write(65-angle);
+    left_servo.write(12+angle);
     delay(20);
   }
+  delay(2000);
 }

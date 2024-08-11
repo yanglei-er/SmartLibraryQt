@@ -4,11 +4,11 @@ CONFIG += c++17
 CONFIG -= debug_and_release
 
 TARGET = "SmartLibrary"
-VERSION = 0.1.6.0
+VERSION = 1.0.0.0
 QMAKE_TARGET_PRODUCT = "SmartLibrary"
 QMAKE_TARGET_DESCRIPTION = "Smart library"
 QMAKE_TARGET_COMPANY = "Yanglei"
-QMAKE_TARGET_COPYRIGHT = "Copyright (c) 2023 Yanglei.All rights reserved."
+QMAKE_TARGET_COPYRIGHT = "Copyright (c) 2024 Yanglei.All rights reserved."
 RC_ICONS = smartlibraryGUI.ico
 RC_LANG = 0x0004
 

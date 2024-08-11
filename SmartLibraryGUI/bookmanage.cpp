@@ -75,7 +75,7 @@ void BookManage::on_import_Btn_clicked()
     if(!filepath.isEmpty())
     {
         sql.mergeDatabase(filepath);
-        QMessageBox::information(this, "导入数据库", "导入成功");
+        QMessageBox::information(nullptr, "导入数据库", "导入成功");
     }
 }
 
